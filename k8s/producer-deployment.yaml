@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-producer
+  namespace: producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-producer
+  template:
+    metadata:
+      labels:
+        app: postgres-producer
+    spec:
+      containers:
+        - name: producer
+          image: postgres-producer:local
+          imagePullPolicy: IfNotPresent
