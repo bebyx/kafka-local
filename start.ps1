@@ -13,3 +13,7 @@ kubectl apply -f https://strimzi.io/examples/latest/kafka/kafka-single-node.yaml
 docker build -t postgres-producer:local ./src/producer
 minikube image load postgres-producer:local
 kubectl apply -f k8s/producer-deployment.yaml
+
+docker build -t kafka-minio-consumer:local ./src/consumer
+minikube image load kafka-minio-consumer:local
+kubectl apply -f k8s/consumer-deployment.yaml
