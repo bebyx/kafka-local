@@ -34,6 +34,16 @@ resource "helm_release" "postgres" {
     name  = "auth.database"
     value = "appdb"
   }
+
+  set {
+    name  = "primary.initdb.scripts.init.sql"
+    value = <<-EOT
+      CREATE TABLE test (
+        id SERIAL PRIMARY KEY,
+        value TEXT
+      );
+    EOT
+  }
 }
 
 resource "helm_release" "minio" {
