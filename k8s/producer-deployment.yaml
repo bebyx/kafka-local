@@ -17,3 +17,27 @@ spec:
         - name: producer
           image: postgres-producer:local
           imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_HOST
+              value: postgres-postgresql.producer.svc.cluster.local
+            - name: POSTGRES_DB
+              value: appdb
+            - name: POSTGRES_USER
+              value: app
+            - name: POSTGRES_PASSWORD
+              value: app
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: KAFKA_BOOTSTRAP
+              value: my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: KAFKA_TOPIC
+              value: events
+            - name: POLL_INTERVAL
+              value: "5"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
