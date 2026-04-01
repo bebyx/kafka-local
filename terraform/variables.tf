@@ -16,3 +16,21 @@ variable "docker_token" {
   type        = string
   sensitive   = true
 }
+
+variable "minio_version" {
+  description = "Minio Helm chart version"
+  type        = string
+  default     = "0.11.0"
+}
+
+variable "postgres_version" {
+  description = "PostgreSQL Helm chart version"
+  type        = string
+  default     = "18.5.14"
+}
+
+variable "strimzi_version" {
+  description = "Strimzi Helm chart version"
+  type        = string
+  default     = "0.51.0"
+}
