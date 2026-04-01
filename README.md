@@ -30,6 +30,8 @@ Consumer (Python)
 MinIO (S3)
 ```
 
+See `guidelines.md` for production considerations.
+
 ---
 
 ## Components
