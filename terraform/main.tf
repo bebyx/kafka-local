@@ -15,6 +15,7 @@ resource "helm_release" "postgres" {
   namespace        = kubernetes_namespace.producer.metadata[0].name
   create_namespace = false
 
+  # YAML encoded style due to init script with multi-line string
   values = [
     yamlencode({
       auth = {
