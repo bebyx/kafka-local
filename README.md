@@ -100,7 +100,11 @@ This will:
 
 ```bash
 kubectl exec -it -n producer postgres-postgresql-0 -- psql -U app -d appdb
+```
 
+Password: `app`.
+
+```sql
 INSERT INTO test (value)
 VALUES ('hello'), ('world'), ('kafka');
 ```
@@ -118,9 +122,15 @@ CREATE TABLE test (
 
 ### Verify Kafka messages
 
+Connect to pod:
+
 ```bash
 kubectl exec -it -n kafka my-cluster-dual-role-0 -- bash
+```
 
+In opened shell:
+
+```bash
 bin/kafka-console-consumer.sh \
   --bootstrap-server localhost:9092 \
   --topic events \
@@ -149,7 +159,7 @@ kubectl run mc --rm -it \
   sh -c "mc alias set local http://minio.consumer.svc.cluster.local:9000 minio minio12345 && mc cat local/kafka-sink/events/1.json"
 ```
 
-Expected output:
+Expected output contains:
 
 ```json
 {"id": 1, "value": "hello"}
