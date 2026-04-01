@@ -11,7 +11,6 @@ This project implements a simple end-to-end data pipeline:
 The system is deployed locally on Kubernetes using:
 
 * Minikube
-* Terraform (for infrastructure provisioning)
 * Strimzi (Kafka operator)
 * Helm charts (Postgres, MinIO)
 
@@ -72,17 +71,10 @@ See `guidelines.md` for production considerations.
 * kubectl
 * Terraform
 * Docker
-* Docker Hub account
-
-Tested environments:
-* Windows 11 (primary development environment)
-* Arch Linux (validation / runtime testing)
 
 ---
 
 ## Quick Start
-
-Put Docker Hub username and token into `terraform/secret.auto.tfvars` (for pulling OCI Helm charts).
 
 Run the bootstrap script:
 
@@ -93,7 +85,7 @@ Run the bootstrap script:
 This will:
 
 * Start Minikube (if not running)
-* Deploy infrastructure via Terraform (including)
+* Deploy infrastructure via Terraform (including Strimzi Kafka, PostgreSQL, MinIO as Helm charts)
 * Build and deploy producer and consumer services
 
 ---
@@ -104,16 +96,12 @@ This will:
 
 ```bash
 kubectl exec -it -n producer postgres-postgresql-0 -- psql -U app -d appdb
-```
 
-Password: `app`.
-
-```sql
 INSERT INTO test (value)
 VALUES ('hello'), ('world'), ('kafka');
 ```
 
-The table as from the command below is created automatically with Terraform:
+The table as from the command below is created automatically with Terrafrom:
 
 ```sql
 CREATE TABLE test (
@@ -126,15 +114,9 @@ CREATE TABLE test (
 
 ### Verify Kafka messages
 
-Connect to pod:
-
 ```bash
 kubectl exec -it -n kafka my-cluster-dual-role-0 -- bash
-```
 
-In opened shell:
-
-```bash
 bin/kafka-console-consumer.sh \
   --bootstrap-server localhost:9092 \
   --topic events \
@@ -163,7 +145,7 @@ kubectl run mc --rm -it \
   sh -c "mc alias set local http://minio.consumer.svc.cluster.local:9000 minio minio12345 && mc cat local/kafka-sink/events/1.json"
 ```
 
-Expected output contains:
+Expected output:
 
 ```json
 {"id": 1, "value": "hello"}
