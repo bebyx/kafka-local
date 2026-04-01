@@ -11,6 +11,7 @@ This project implements a simple end-to-end data pipeline:
 The system is deployed locally on Kubernetes using:
 
 * Minikube
+* Terraform (for infrastructure provisioning)
 * Strimzi (Kafka operator)
 * Helm charts (Postgres, MinIO)
 
@@ -67,7 +68,7 @@ See `guidelines.md` for production considerations.
 
 ## Prerequisites
 
-* Minikube (will be started automatically by the script if not running)
+* Minikube
 * kubectl
 * Terraform
 * Docker
@@ -88,8 +89,7 @@ Run the bootstrap script:
 This will:
 
 * Start Minikube (if not running)
-* Deploy infrastructure via Terraform
-* Deploy Kafka (Strimzi)
+* Deploy infrastructure via Terraform (including)
 * Deploy producer and consumer services
 
 ---
