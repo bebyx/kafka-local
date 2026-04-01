@@ -105,7 +105,7 @@ INSERT INTO test (value)
 VALUES ('hello'), ('world'), ('kafka');
 ```
 
-The table as from the command below is created automatically with Terrafrom:
+The table as from the command below is created automatically with Terraform:
 
 ```sql
 CREATE TABLE test (
