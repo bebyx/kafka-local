@@ -7,13 +7,15 @@ echo "🚀 Starting local Kafka pipeline..."
 # 1. Start minikube if not running
 if ! minikube status | grep -q "Running"; then
   echo "Starting Minikube..."
-  minikube start
+  minikube start --driver=docker
 fi
 
 # 2. Terraform apply
 echo "Applying Terraform..."
+cd terraform
 terraform init
 terraform apply -auto-approve
+cd ..
 
 # 3. Deploy Kafka cluster
 echo "Deploying Kafka (Strimzi)..."
