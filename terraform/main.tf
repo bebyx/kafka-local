@@ -11,46 +11,41 @@ resource "helm_release" "postgres" {
   name             = "postgres"
   repository       = "${var.docker_oci_url}/bitnamicharts"
   chart            = "postgresql"
-  version          = "18.5.14"
+  version          = var.postgres_version
   namespace        = kubernetes_namespace.producer.metadata[0].name
   create_namespace = false
 
-  set {
-    name  = "auth.postgresPassword"
-    value = "postgres"
-  }
+  # YAML encoded style due to init script with multi-line string
+  values = [
+    yamlencode({
+      auth = {
+        postgresPassword = "postgres"
+        username         = "app"
+        password         = "app"
+        database         = "appdb"
+      }
 
-  set {
-    name  = "auth.username"
-    value = "app"
-  }
-
-  set {
-    name  = "auth.password"
-    value = "app"
-  }
-
-  set {
-    name  = "auth.database"
-    value = "appdb"
-  }
-
-  set {
-    name  = "primary.initdb.scripts.init.sql"
-    value = <<-EOT
-      CREATE TABLE test (
-        id SERIAL PRIMARY KEY,
-        value TEXT
-      );
-    EOT
-  }
+      primary = {
+        initdb = {
+          scripts = {
+            "init.sql" = <<-EOT
+              CREATE TABLE test (
+                id SERIAL PRIMARY KEY,
+                value TEXT
+              );
+            EOT
+          }
+        }
+      }
+    })
+  ]
 }
 
 resource "helm_release" "minio" {
   name             = "minio"
   repository       = "${var.docker_oci_url}/cloudpirates/"
   chart            = "minio"
-  version          = "0.11.0"
+  version          = var.minio_version
   namespace        = kubernetes_namespace.consumer.metadata[0].name
   create_namespace = false
 
