@@ -51,7 +51,7 @@ See `guidelines.md` for production considerations.
 
 * Polls PostgreSQL
 * Sends new records to Kafka
-* Maintains offset via `id`
+* Maintains offset via incremental `id` tracking (application-level offset)
 
 ### Consumer
 
@@ -67,7 +67,7 @@ See `guidelines.md` for production considerations.
 
 ## Prerequisites
 
-* Kubernetes cluster (Minikube)
+* Minikube (will be started automatically by the script if not running)
 * kubectl
 * Terraform
 * Docker
@@ -100,6 +100,15 @@ kubectl exec -it -n producer postgres-postgresql-0 -- psql -U app -d appdb
 
 INSERT INTO test (value)
 VALUES ('hello'), ('world'), ('kafka');
+```
+
+The table as from the command below is created automatically with Terrafrom:
+
+```sql
+CREATE TABLE test (
+    id SERIAL PRIMARY KEY,
+    value TEXT
+);
 ```
 
 ---
@@ -178,12 +187,13 @@ A simple polling approach is used instead of CDC:
 * No exactly-once guarantees
 * No partitioning strategy tuning
 * No authentication (MinIO/Kafka are open)
+* No backpressure handling
 
 ---
 
 ## Future Improvements
 
-* Use Kafka Connect (JDBC Source / S3 Sink)
+* Replace custom producer/consumer with Kafka Connect (JDBC Source + S3 Sink)
 * Add schema registry (Avro / Protobuf)
 * Implement idempotent producer
 * Add retry & DLQ strategy
