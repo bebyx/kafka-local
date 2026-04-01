@@ -74,6 +74,10 @@ See `guidelines.md` for production considerations.
 * Docker
 * Docker Hub account
 
+Tested environments:
+* Windows 11 (primary development environment)
+* Arch Linux (validation / runtime testing)
+
 ---
 
 ## Quick Start
@@ -90,7 +94,7 @@ This will:
 
 * Start Minikube (if not running)
 * Deploy infrastructure via Terraform (including)
-* Deploy producer and consumer services
+* Build and deploy producer and consumer services
 
 ---
 
