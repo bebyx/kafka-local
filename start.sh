@@ -22,7 +22,15 @@ kubectl apply -f https://strimzi.io/examples/latest/kafka/kafka-single-node.yaml
 echo "Waiting for Kafka to be ready..."
 kubectl wait pod -l strimzi.io/name=my-cluster-kafka -n kafka --for=condition=Ready --timeout=180s || true
 
-# 4. Deploy apps
+# 4. Build producer & consumer apps
+echo "Building producer & consumer Docker images..."
+docker build -t postgres-producer:local ./src/producer
+minikube image load postgres-producer:local
+
+docker build -t kafka-minio-consumer:local ./src/consumer
+minikube image load kafka-minio-consumer:local
+
+# 5. Deploy apps
 echo "Deploying producer & consumer..."
 kubectl apply -f k8s/producer-deployment.yaml
 kubectl apply -f k8s/consumer-deployment.yaml
