@@ -71,10 +71,13 @@ See `guidelines.md` for production considerations.
 * kubectl
 * Terraform
 * Docker
+* Docker Hub account
 
 ---
 
 ## Quick Start
+
+Put Docker Hub username and token into `terraform/secret.auto.tfvars` (for pulling OCI Helm charts).
 
 Run the bootstrap script:
 
