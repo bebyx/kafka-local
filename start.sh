@@ -12,10 +12,8 @@ fi
 
 # 2. Terraform apply
 echo "Applying Terraform..."
-cd terraform
-terraform init
-terraform apply -auto-approve
-cd ..
+terraform -chdir=terraform init
+terraform -chdir=terraform apply -auto-approve
 
 # 3. Deploy Kafka cluster
 echo "Deploying Kafka (Strimzi)..."
@@ -26,7 +24,7 @@ kubectl wait pod -l strimzi.io/name=my-cluster-kafka -n kafka --for=condition=Re
 
 # 4. Deploy apps
 echo "Deploying producer & consumer..."
-kubectl apply -f k8s/producer.yaml
-kubectl apply -f k8s/consumer.yaml
+kubectl apply -f k8s/producer-deployment.yaml
+kubectl apply -f k8s/consumer-deployment.yaml
 
 echo "✅ Setup completed"
